@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use App\Models\Category;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -13,6 +14,7 @@ class ProductForm
     {
         return $schema
             ->components([
+                FileUpload::make('image_path')->label('Product Image')->disk('public')->directory('product-images'),
                 TextInput::make('name')->required(),
                 Select::make('category_id')
                     ->label('Category')

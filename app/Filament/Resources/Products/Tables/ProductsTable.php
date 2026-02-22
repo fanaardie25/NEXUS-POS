@@ -10,6 +10,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
@@ -20,6 +21,10 @@ class ProductsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('image_path')
+                    ->label('Image')
+                    ->disk('public')
+                    ->square(),
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('category.name')->searchable()->sortable(),
                 TextColumn::make('sku')->searchable()->sortable(),
