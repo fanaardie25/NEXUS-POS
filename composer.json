@@ -11,7 +11,8 @@
         "filament/filament": "^5.0",
         "guava/filament-icon-select-column": "^3.0",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "swisnl/filament-backgrounds": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
