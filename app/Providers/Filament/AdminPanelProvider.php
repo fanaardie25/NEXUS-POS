@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jacobtims\FilamentLogger\FilamentLoggerPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -42,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                     FilamentShieldPlugin::make(),
                     FilamentBackgroundsPlugin::make()->showAttribution(false),
+                    FilamentLoggerPlugin::make(),
                 ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
