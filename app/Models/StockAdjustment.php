@@ -12,4 +12,19 @@ class StockAdjustment extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    protected static function booted()
+{
+    static::created(function ($adjustment) {
+        $product = $adjustment->product;
+
+        
+        $qty = (int) $adjustment->qty; 
+
+        
+        $amount = ($adjustment->type === 'addition') ? $qty : -$qty;
+
+        $product->increment('stock', $amount);
+    });
+}
 }

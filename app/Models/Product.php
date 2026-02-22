@@ -14,7 +14,7 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function stockAdjustments()
+    public function adjustments()
     {
         return $this->hasMany(StockAdjustment::class);
     }
