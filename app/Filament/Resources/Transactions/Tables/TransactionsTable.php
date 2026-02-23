@@ -5,11 +5,12 @@ namespace App\Filament\Resources\Transactions\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
-use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class TransactionsTable
@@ -33,34 +34,28 @@ class TransactionsTable
                 TextColumn::make('created_at')->label('date')->sortable()->date(),
             ])
             ->filters([
-                //
+                Filter::make('created_at')
+                ->schema([
+                    DatePicker::make('from')->label('Date From'),
+                    DatePicker::make('until')->label('Date Until'),
+                ])
+                ->query(function (Builder $query, array $data) {
+                    return $query
+                        ->when($data['from'], fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['from'])
+                        )
+                        ->when($data['until'], fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['until'])
+                        );
+                }),
             ])
             ->recordActions([
                 ViewAction::make(),
             ])
             ->headerActions([
-                ExportAction::make()->exports([
-                ExcelExport::make()
-                    ->withFilename('Transactions-' . date('Y-m-d')) 
-                    ->withColumns([
-                        Column::make('invoice_number')
-                            ->heading('Invoice Number'),
-                            
-                        Column::make('user.name')
-                            ->heading('Cashier'),
-                            
-                        Column::make('total')
-                            ->heading('Total Amount')
-                            ->format('#,##0'), 
-                            
-                        Column::make('payment_method')
-                            ->heading('Payment'),
-                            
-                        Column::make('created_at')
-                            ->heading('Transaction Date')
-                            ->format('d/m/Y H:i'), 
-                    ])
-])
+              ExportAction::make()->exports([
+                    ExcelExport::make('table')->fromTable()->askForWriterType()->askForFilename()->queue(),
+                ])
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
