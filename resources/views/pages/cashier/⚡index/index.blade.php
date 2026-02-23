@@ -42,6 +42,23 @@
     </div>
     @endif
     <main class="flex flex-1 overflow-hidden h-[calc(100vh-64px)]">
+        <div id="scannerModal" class="fixed inset-1 bg-black/50 hidden items-center justify-center z-[999]">
+
+            <div
+                class="bg-white/10 backdrop-blur-xl border border-white/20 text-white w-full max-w-lg rounded-xl shadow-xl p-4 relative">
+
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-bold">Scan Barcode</h2>
+
+                    <button id="closeScanner" class="text-gray-300 hover:text-white text-xl">
+                        ✕
+                    </button>
+                </div>
+
+                <div id="reader" class="w-full rounded-xl overflow-hidden"></div>
+
+            </div>
+        </div>
         <section
             class="flex flex-col flex-1 min-w-0 bg-slate-50 dark:bg-[#111a22] border-r border-slate-200 dark:border-[#233648]">
             <div class="sticky top-0 z-10 bg-white/80 dark:bg-[#111a22]/95 backdrop-blur-md border-b p-4 space-y-4">
@@ -61,7 +78,6 @@
                     </button>
                 </div>
 
-                <div id="reader" style="width: 100%" class="hidden mt-4 rounded-xl overflow-hidden"></div>
 
                 <div class="flex gap-3 overflow-x-auto no-scrollbar pb-1">
                     <button wire:click="$set('activeCategory', 'all')"
@@ -298,12 +314,27 @@
     let html5QrCode = null;
     let scannerActive = false;
     let isScanning = false;
+    const closeScan = document.getElementById('closeScanner');
+
+    closeScan.addEventListener('click', () => {
+        stopScanner().then(() => {
+            document.getElementById('reader').classList.add('hidden');
+            document.getElementById('scannerModal').classList.add('hidden');
+        });
+    });
 
     function startScan() {
         const reader = document.getElementById('reader');
+        const modal = document.getElementById('scannerModal');
+
         
         if (reader.classList.contains('hidden')) {
             reader.classList.remove('hidden');
+        
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
             
             // Reset scanner state
             if (html5QrCode) {
@@ -320,6 +351,8 @@
         } else {
             stopScanner().then(() => {
                 reader.classList.add('hidden');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
             });
         }
     }
@@ -330,7 +363,7 @@
             console.log('Scanner already running');
             return;
         }
-        
+
         const reader = document.getElementById('reader');
         
        
@@ -365,11 +398,13 @@
             // Stop scanner after successful scan
             stopScanner().then(() => {
                 reader.classList.add('hidden');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
             });
         };
 
         const config = { 
-            fps: 30, 
+            fps: 20, 
             qrbox: { width: 250, height: 250 } 
         };
         
