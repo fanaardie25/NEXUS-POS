@@ -63,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])->navigationItems([
-            NavigationItem::make('Kasir')
+            NavigationItem::make('Cashier Page')
                 ->icon('heroicon-o-shopping-cart')
                 ->url('/cashier') 
                 ->sort(1),
