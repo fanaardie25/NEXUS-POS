@@ -21,9 +21,8 @@ new class extends Component
             return;
         }
         
-        $product = Product::where('name', $this->search)
+        $product = Product::where('barcode', $this->search)
                          ->orWhere('sku', $this->search)
-                         ->orWhere('id', $this->search)
                          ->first();
         
         if ($product) {
