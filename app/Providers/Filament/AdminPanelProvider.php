@@ -13,6 +13,8 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
+use Hammadzafar05\MobileBottomNav\MobileBottomNav;
+use Hammadzafar05\MobileBottomNav\MobileBottomNavItem;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -44,6 +46,20 @@ class AdminPanelProvider extends PanelProvider
                     FilamentShieldPlugin::make(),
                     FilamentBackgroundsPlugin::make()->showAttribution(false),
                     FilamentLoggerPlugin::make(),
+                    MobileBottomNav::make()
+                    ->items([
+                        MobileBottomNavItem::make('Home')
+                            ->icon('heroicon-o-home')
+                            ->activeIcon('heroicon-s-home')
+                            ->url('/admin')
+                            ->isActive(fn () => request()->is('admin')),
+                        MobileBottomNavItem::make('Cashier')
+                            ->icon('heroicon-o-shopping-cart')
+                            ->url('/cashier'),
+                        // MobileBottomNavItem::make('Profile')
+                        //     ->icon('heroicon-o-user')
+                        //     ->url('/admin/profile'),
+                    ]),
                 ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
@@ -60,6 +76,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->spa()
             ->authMiddleware([
                 Authenticate::class,
             ])->navigationItems([
