@@ -13,8 +13,13 @@ new class extends Component
     public $paymentMethod = 'cash';
     public $cashGiven = 0;
     public $total = 0;
-    
+    public $perPage = 12; // Jumlah awal produk
 
+    public function loadMore()
+    {
+        $this->perPage += 12; 
+    }
+        
     public function scanProduct()
     {
         if (empty($this->search)) {
@@ -138,7 +143,7 @@ new class extends Component
             $query->where('name', 'like', '%' . $this->search . '%');
         }
 
-        $products = $query->get();
+        $products = $query->paginate($this->perPage)->withQueryString();
 
         
         $subtotal = collect($this->cart)->sum(fn($item) => $item['price'] * $item['quantity']);
