@@ -27,7 +27,6 @@ class ProductForm
                 ->icon('heroicon-o-arrow-right')
                 ->label('Product Barcode')
                 ->placeholder('Scan or type barcode...')
-                ->required()
                 ->unique('products', 'barcode')
                 ->rules(['min:8', 'max:50'])
                 ->helperText('Scan the barcode on the product packaging')

@@ -58,10 +58,26 @@ class ProductsTable
                  ForceDeleteAction::make(),
                   RestoreAction::make(),
                 DeleteAction::make(),
+                Action::make('printBarcode')
+                ->label('Print Barcode')
+                ->icon('heroicon-o-printer')
+                ->color('success')
+                ->hidden(fn ($record) => !$record->barcode)
+                ->url(fn ($record) => route('print.barcode', $record))
+                ->openUrlInNewTab(), 
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    BulkAction::make('printSelectedBarcodes')
+                    ->label('Print Seleected Barcodes')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->action(function (Collection $records) {
+                        $ids = $records->pluck('id')->implode(',');
+                        
+                        return redirect()->route('print.barcodes.bulk', ['ids' => $ids]);
+                    })->openUrlInNewTab(), 
                     BulkAction::make('toggle')
                         ->label('Toggle Active')
                         ->accessSelectedRecords()
