@@ -20,6 +20,8 @@ class ProductForm
                 Select::make('category_id')
                     ->label('Category')
                     ->required()
+                    ->searchable()
+                    ->preload()
                     ->options(Category::where('is_active',true)->pluck('name', 'id')),
                 BarcodeInput::make('barcode')
                 ->icon('heroicon-o-arrow-right')
@@ -32,7 +34,7 @@ class ProductForm
                 ->hint('Required')
                 ->live(),
                 TextInput::make('sku')->required(),
-                TextInput::make('price')->numeric()->required(),
+                TextInput::make('price')->numeric()->required()->prefix('Rp'),
                 TextInput::make('cost')->numeric()->required(),
                 TextInput::make('stock')->numeric()->required(),
             ]);
