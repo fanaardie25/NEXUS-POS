@@ -22,7 +22,7 @@ class ListCashFlows extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            \App\Filament\Widgets\CashFlowStats::class,
+            \App\Livewire\CashFlowStats::class,
         ];
     }
 

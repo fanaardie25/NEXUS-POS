@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Livewire;
 
 use App\Models\CashFlow;
 use Filament\Widgets\StatsOverviewWidget;
@@ -10,7 +10,6 @@ class CashFlowStats extends StatsOverviewWidget
 {
     protected function getStats(): array
     {
-            
         $openingBalance = CashFlow::whereHas('financialCategory', fn($q) => 
             $q->where('slug', 'modal-awal')
         )->sum('amount');
