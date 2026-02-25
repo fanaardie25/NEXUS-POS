@@ -1,8 +1,10 @@
 <?php
 
+use App\Exports\ProductTemplateExport;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,3 +23,10 @@ Route::get('/print-barcodes', function (Request $request) {
 
     return view('barcode-print-bulk', ['records' => $products]);
 })->name('print.barcodes.bulk');
+
+Route::get('/products-template', function () {
+    return Excel::download(
+        new ProductTemplateExport,
+        'products-template.csv'
+    );
+})->name('products.template');

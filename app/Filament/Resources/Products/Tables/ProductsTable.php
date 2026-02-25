@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Filament\Exports\ProductExporter;
+use App\Filament\Imports\ProductImporter;
 use App\Models\Product;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -9,13 +11,16 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\ImportAction;
 use Filament\Actions\RestoreAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Support\Collection;
 
 class ProductsTable
@@ -53,6 +58,18 @@ class ProductsTable
             ->filters([
                 TrashedFilter::make(),
             ])
+            ->headerActions([
+                ImportAction::make('import products')
+                    ->importer(ProductImporter::class)
+                    ->label('Import Products')
+                    ->icon('heroicon-o-document-arrow-up')
+                    ->color('primary'),
+                Action::make('template')
+                ->label('Download Template')
+                ->color('warning')
+                ->url(route('products.template'))
+                ->openUrlInNewTab()
+             ])
             ->recordActions([
                 EditAction::make(),
                  ForceDeleteAction::make(),
