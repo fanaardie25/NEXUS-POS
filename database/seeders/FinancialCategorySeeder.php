@@ -16,21 +16,27 @@ class FinancialCategorySeeder extends Seeder
         $categories = [
             [
                 'id' => 1,
-                'name' => 'Modal Awal',
-                'slug' => 'modal-awal',
-                'type' => 'credit', 
+                'name' => 'Customer Order',
+                'slug' => 'customer-order',
+                'type' => 'debit', 
             ],
             [
                 'id' => 2,
-                'name' => 'Biaya Operasional',
-                'slug' => 'biaya-operasional',
+                'name' => 'Modal Awal',
+                'slug' => 'modal-awal',
                 'type' => 'debit', 
             ],
             [
                 'id' => 3,
+                'name' => 'Biaya Operasional',
+                'slug' => 'biaya-operasional',
+                'type' => 'credit', 
+            ],
+            [
+                'id' => 4,
                 'name' => 'Gaji Karyawan',
                 'slug' => 'gaji-karyawan',
-                'type' => 'debit',
+                'type' => 'credit',
             ],
 
         ];
